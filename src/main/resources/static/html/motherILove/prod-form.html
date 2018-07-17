@@ -1,0 +1,109 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Amaze UI Admin table Examples</title>
+    <meta name="description" content="这是一个 table 页面">
+    <meta name="keywords" content="table">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <link rel="import" href="../../commonCss.html" id="page1">
+</head>
+
+<body data-type="widgets">
+<script src="../../js/motherILove/prod.js"></script>
+<div class="am-g tpl-g" id="app">
+    <!-- 头部 -->
+    <header>
+        <!-- 右侧内容 -->
+        <div class="tpl-header-fluid">
+            <!-- 侧边切换 -->
+            <div class="am-fl tpl-header-switch-button am-icon-list">
+                    <span>
+                    </span>
+            </div>
+            <include src="../../header.html"></include>
+        </div>
+    </header>
+    <!-- 侧边导航栏 -->
+    <div class="left-sidebar">
+        <include src="../../left.html"></include>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+
+        <div class="row-content am-cf">
+            <div class="row">
+
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title am-fl">编辑产品</div>
+                            <div class="widget-function am-fr">
+                                <a href="javascript:;" class="am-icon-cog"></a>
+                            </div>
+                        </div>
+                        <div class="widget-body am-fr">
+
+                            <form class="am-form tpl-form-border-form tpl-form-border-br">
+                                <div class="am-form-group">
+                                    <label for="prod-num" class="am-u-sm-3 am-form-label">编号 <span
+                                            class="tpl-form-line-small-title">Num</span></label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" class="tpl-form-input" readonly='' id="prod-num" v-model="add.num" placeholder="请输入标题文字">
+                                        <small>自动生成：日期+序号</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="prod-name" class="am-u-sm-3 am-form-label">产品名称 <span
+                                            class="tpl-form-line-small-title">Name</span></label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" class="tpl-form-input" id="prod-name" v-model="add.name" placeholder="请输入标题文字">
+                                        <small>请填写产品名称</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="Remark" class="am-u-sm-3 am-form-label">备注 <span
+                                            class="tpl-form-line-small-title">Remark</span></label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" class="tpl-form-input" id="Remark" v-model="add.remark" placeholder="请输入标题文字">
+                                        <small>请填写产品备注</small>
+                                    </div>
+                                </div>
+
+                                <div class="am-form-group">
+                                    <label class="am-u-sm-3 am-form-label">封面图 <span
+                                            class="tpl-form-line-small-title">Images</span></label>
+                                    <div class="am-u-sm-9">
+                                        <div class="am-form-group am-form-file">
+                                            <div class="tpl-form-file-img">
+                                                <img src="assets/img/a5.png" alt="">
+                                            </div>
+                                            <button type="button" class="am-btn am-btn-danger am-btn-sm">
+                                                <i class="am-icon-cloud-upload"></i> 添加封面图片
+                                            </button>
+                                            <input id="doc-form-file" accept="image/*" type="file" multiple="">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <div class="am-u-sm-12 am-u-sm-push-12">
+                                        <button type="button" @click="save()" class="am-btn am-btn-primary am-btn-block">提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="import" href="../../commonJs.html">
+
+</body>

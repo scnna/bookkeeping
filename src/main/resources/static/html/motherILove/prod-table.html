@@ -1,0 +1,100 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Amaze UI Admin table Examples</title>
+    <meta name="description" content="这是一个 table 页面">
+    <meta name="keywords" content="table">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <link rel="import" href="../../commonCss.html" id="page1">
+</head>
+
+<body data-type="widgets">
+<script src="../../js/motherILove/prod.js"></script>
+<div class="am-g tpl-g" id="app">
+    <!-- 头部 -->
+    <header>
+        <!-- 右侧内容 -->
+        <div class="tpl-header-fluid">
+            <!-- 侧边切换 -->
+            <div class="am-fl tpl-header-switch-button am-icon-list">
+                    <span>
+                    </span>
+            </div>
+            <include src="../../header.html"></include>
+        </div>
+    </header>
+    <!-- 侧边导航栏 -->
+    <div class="left-sidebar">
+        <include src="../../left.html"></include>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+
+        <div class="row-content am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title am-fl"><h2>产品信息</h2></div>
+                            <div class="tpl-index-settings-button" style="display: inline">
+                                <button type="button" class="am-btn" onclick="window.location.href='prod-form.html'"
+                                        style="float: right;background-color: rgba(0, 0, 0, 0);border: 1px solid #fff; opacity: 0.6;">
+                                    <span class="am-icon-paint-brush"></span> 新增
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-body  widget-body-lg am-fr">
+
+                            <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black "
+                                   id="example-r">
+                                <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>产品名称</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="gradeX" v-for="prod in prods">
+                                    <td>{{prod.num}}</td>
+                                    <td>{{prod.name}}</td>
+                                    <td>
+                                        <div class="tpl-table-black-operation">
+                                            <a href="javascript:;">
+                                                <i class="am-icon-pencil"></i> 编辑
+                                            </a>
+                                            <a href="javascript:;" class="tpl-table-black-operation-del">
+                                                <i class="am-icon-trash"></i> 删除
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- more data -->
+                                </tbody>
+                            </table>
+                            <ul class="am-pagination am-fr admin-content-pagination">
+                                <li>共<strong>{{pages}}</strong>页<strong>{{total}}</strong>条数据</li>
+                                <li class="am-disabled" v-show="pageNum>1" @click="pageNum-- && goto(pageNum--)"><a
+                                        href="#">&laquo;</a></li>
+                                <li v-for="index in pages" @click="goto(index)" :class="{'am-active':pageNum == index}"
+                                    :key="index"><a  href="#">{{index}}</a></li>
+                                <li v-show="pageNum<pages" @click="pageNum++ && goto(pageNum++)"><a
+                                        href="#">&raquo;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="import" href="../../commonJs.html">
+
+</body>

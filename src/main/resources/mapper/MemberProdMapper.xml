@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bookkeep.mapper.MemberProdMapper">
+    <resultMap id="BaseResultMap" type="com.bookkeep.domain.MemberProd">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="member_id" property="memberId" jdbcType="INTEGER"/>
+        <result column="come_id" property="comeId" jdbcType="INTEGER"/>
+        <result column="count" property="count" jdbcType="INTEGER"/>
+        <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_user" property="createUser" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <resultMap id="WorkRecordMap" type="com.bookkeep.DTO.WorkRordDTO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="memberName" property="memberName" jdbcType="VARCHAR"/>
+        <result column="prodName" property="prodName" jdbcType="VARCHAR"/>
+        <result column="batch" property="batch" jdbcType="VARCHAR"/>
+        <result column="count" property="count" jdbcType="INTEGER"/>
+        <result column="price" property="price" jdbcType="INTEGER"/>
+        <result column="startTime" property="startTime" jdbcType="VARCHAR"/>
+        <result column="endTime" property="endTime" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, member_id, come_id, count, start_time, end_time, create_time, create_user, update_time
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_member_prod
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getList" resultMap="BaseResultMap" parameterType="com.bookkeep.DTO.WorkRordDTO">
+        SELECT
+	    mp.*,member.`name` memberName,prod.`name` prodName
+        FROM
+	    tb_member_prod mp,
+	    tb_member member,
+	    tb_prod_come come,
+	    tb_prod prod
+    WHERE
+	    mp.member_id = member.id
+        AND mp.come_id = come.id
+        AND come.prod_id = prod.id order BY mp.id DESC;
+    </select>
+
+    <select id="findListByWorkRecord" resultMap="WorkRecordMap" parameterType="com.bookkeep.DTO.WorkRordDTO">
+        SELECT
+        a.id,sum(a.count) count,MIN(a.start_time) startTime,MAX(a.end_time) endTime,
+        b.prodName ,c.name memberName,sum(a.count*b.price) price,b.batch,b.come_count comeCount
+        FROM
+        tb_member_prod a,
+        (
+        SELECT
+        come.*, prod.name prodName
+        FROM
+        tb_prod_come come
+        JOIN tb_prod prod ON come.prod_id = prod.id
+        <if test="prodId!=null">
+            where come.prod_id=#{prodId,jdbcType=INTEGER}
+        </if>
+        ) b,tb_member c
+        WHERE a.come_id=b.id and a.member_id=c.id
+        <if test="startTime!=null">
+            a.start_time>=#{startTime,jdbcType=VARCHAR}
+        </if>
+        <if test="endTime!=null">
+            a.end_time>=#{endTime,jdbcType=VARCHAR}
+        </if>
+        GROUP BY c.`name`,b.prodName,b.batch
+        ORDER BY count desc;
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_member_prod
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.bookkeep.domain.MemberProd">
+    insert into tb_member_prod (id, member_id, come_id, 
+      count, start_time, end_time, 
+      create_time, create_user, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{comeId,jdbcType=INTEGER}, 
+      #{count,jdbcType=INTEGER}, #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.bookkeep.domain.MemberProd">
+        insert into tb_member_prod
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="comeId != null">
+                come_id,
+            </if>
+            <if test="count != null">
+                count,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=INTEGER},
+            </if>
+            <if test="comeId != null">
+                #{comeId,jdbcType=INTEGER},
+            </if>
+            <if test="count != null">
+                #{count,jdbcType=INTEGER},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.bookkeep.domain.MemberProd">
+        update tb_member_prod
+        <set>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=INTEGER},
+            </if>
+            <if test="comeId != null">
+                come_id = #{comeId,jdbcType=INTEGER},
+            </if>
+            <if test="count != null">
+                count = #{count,jdbcType=INTEGER},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.bookkeep.domain.MemberProd">
+    update tb_member_prod
+    set member_id = #{memberId,jdbcType=INTEGER},
+      come_id = #{comeId,jdbcType=INTEGER},
+      count = #{count,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
