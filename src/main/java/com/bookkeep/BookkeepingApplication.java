@@ -10,10 +10,10 @@ import java.util.Properties;
 
 @SpringBootApplication
 @MapperScan("com.bookkeep.mapper")
-public class BookkeepApplication {
+public class BookkeepingApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BookkeepApplication.class, args);
+		SpringApplication.run(BookkeepingApplication.class, args);
 	}
 	@Bean
 	public PageHelper pageHelper() {
